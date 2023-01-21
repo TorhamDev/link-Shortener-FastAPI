@@ -3,6 +3,11 @@ from models import Link
 
 
 def generate_short_link():
+    """
+    It is responsible for creating random short links
+
+    retrun : random string for short link
+    """
 
     while True:
         random_flag = random_strings.random_letters(8)
@@ -17,6 +22,13 @@ def generate_short_link():
 
 
 def create_short_link_record(link_address: str) -> str:
+    """
+    It is responsible for create a new database record for new short link
+
+    params : link_address : user input link
+
+    return : random short link str
+    """
 
     random_link = generate_short_link()
 
