@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from models import Link
 from validations import link_validation
-from utils import generate_short_link
+from utils import create_short_link_record
 from starlette.responses import RedirectResponse
 
 app = FastAPI()
@@ -15,13 +15,9 @@ class LinkData(BaseModel):
 @app.post("/generate")
 async def generate(link: LinkData, request: Request):
 
-    if not link_validation(link.address):
-        raise HTTPException(status_code=400, detail="Invalid link address")
-    else:
-        random_link = generate_short_link(link.address)
-
-    short_link = Link(address=link.address, short_link=random_link)
-    short_link.save()
+    link_address = link.address
+    link_validation(link_address)
+    random_link = create_short_link_record(link_address)
 
     return {"link": f"{request.client.host}/{random_link}"}
 
