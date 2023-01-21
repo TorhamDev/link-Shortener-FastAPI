@@ -14,6 +14,14 @@ class LinkData(BaseModel):
 
 @app.post("/generate")
 async def generate(link: LinkData, request: Request):
+    """
+    This view is responsible for receiving links and creating short links
+
+    params : link : user input link for shorting
+    params : request : http request object
+
+    retrun : short link in json or HTTPException
+    """
 
     link_address = link.address
     link_validation(link_address)
@@ -24,6 +32,14 @@ async def generate(link: LinkData, request: Request):
 
 @app.get("/{link}")
 async def root(link: str):
+    """
+    This function is responsible for checking the short link and
+    redirect users to the path related to that short link
+
+    params : short_link : user short link
+
+    return : redirect user or HTTPException
+    """
 
     redirect_link = Link.select().where(Link.short_link == link)
 
