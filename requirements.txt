@@ -1,0 +1,4 @@
+python-random-strings==0.3
+peewee==3.15.4
+uvicorn==0.20.0
+fastapi==0.89.1
