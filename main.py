@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from models import Link
 from validations import link_validation
 from utils import create_short_link_record
-from starlette.responses import RedirectResponse
+from starlette.responses import RedirectResponse, HTMLResponse
 
 app = FastAPI()
 
@@ -18,6 +18,7 @@ async def generate(link: LinkData, request: Request):
     This view is responsible for receiving links and creating short links
 
     params : link : user input link for shorting
+
     params : request : http request object
 
     retrun : short link in json or HTTPException
@@ -31,7 +32,7 @@ async def generate(link: LinkData, request: Request):
 
 
 @app.get("/{link}")
-async def root(link: str):
+async def redirect(link: str):
     """
     This function is responsible for checking the short link and
     redirect users to the path related to that short link
@@ -47,3 +48,12 @@ async def root(link: str):
         return RedirectResponse(url=redirect_link[0].address)
     else:
         raise HTTPException(status_code=400, detail="Short url doesn't exist")
+
+
+@app.get("/")
+async def root():
+    """
+    Web site index
+    """
+
+    return HTMLResponse("Hello World!")
