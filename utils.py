@@ -1,5 +1,6 @@
 from python_random_strings import random_strings
 from models import Link
+from typing import Union
 
 
 def generate_short_link():
@@ -36,3 +37,19 @@ def create_short_link_record(link_address: str) -> str:
     short_link.save()
 
     return random_link
+
+
+def check_link_is_exsits(link) -> Union[str, bool]:
+    """
+    It is responsible for checking input link already exists or not
+
+    params : link : user input link for generating short link
+
+    retrun : short link if exsits or False
+    """
+
+    query = Link.select().where(Link.address == link)
+    if query.exists():
+        return query[0].short_link
+    else:
+        return False
