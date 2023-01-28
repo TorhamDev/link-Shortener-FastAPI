@@ -38,3 +38,8 @@ docker build -t fast-api-link .
 # run the project on 8080 port
 docker run -d -p 8080:8080 fast-api-link
 ```
+
+
+
+# License
+[![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](./LICENSE)
