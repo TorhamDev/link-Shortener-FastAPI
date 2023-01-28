@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from models import Link
 from validations import link_validation
-from utils import create_short_link_record
+from utils import create_short_link_record, check_link_is_exsits
 from starlette.responses import RedirectResponse, HTMLResponse
 
 app = FastAPI()
@@ -25,6 +25,13 @@ async def generate(link: LinkData, request: Request):
     """
 
     link_address = link.address
+    
+    is_exists = check_link_is_exsits(link_address)
+
+    if is_exists != False:
+        return {"link": f"{request.client.host}/{is_exists}"}
+
+
     link_validation(link_address)
     random_link = create_short_link_record(link_address)
 
