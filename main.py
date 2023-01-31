@@ -34,15 +34,15 @@ async def generate(link: LinkData, request: Request):
     
     is_exists = check_link_is_exsits(link_address)
 
-    if is_exists != False:
+    if is_exists:
         set_cashe(link_address, is_exists, 60)
         return {"link": f"{request.client.host}/{is_exists}"}
 
-    else:
-        link_validation(link_address)
-        random_link = create_short_link_record(link_address)
-        set_cashe(link_address, random_link, 60)
-        return {"link": f"{request.client.host}/{random_link}"}
+    
+    link_validation(link_address)
+    random_link = create_short_link_record(link_address)
+    set_cashe(link_address, random_link, 60)
+    return {"link": f"{request.client.host}/{random_link}"}
 
 
 
