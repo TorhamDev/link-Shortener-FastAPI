@@ -1,6 +1,7 @@
 from python_random_strings import random_strings
 from models import Link
 from typing import Union
+from database import redis_obj as redis
 
 
 def generate_short_link():
@@ -53,3 +54,21 @@ def check_link_is_exsits(link) -> Union[str, bool]:
         return query[0].short_link
     else:
         return False
+
+
+def set_cashe(key: str, value: str, expire_time=None) -> bool:
+    """
+    Set cashe in redis with expire time
+
+    params : key : key for set data in redis
+    params : value : data want to save in redist as cashe
+    params : expire_tim : expire time for cashe, also can be null. this mean for ever :)
+
+    retrun: True or False
+    """
+
+    redis.set(key, value)
+    if expire_time is not None:
+        redis.expire(key, expire_time)
+
+    return True

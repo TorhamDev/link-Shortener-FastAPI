@@ -2,8 +2,9 @@ from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
 from models import Link
 from validations import link_validation
-from utils import create_short_link_record, check_link_is_exsits
+from utils import create_short_link_record, check_link_is_exsits, set_cashe
 from starlette.responses import RedirectResponse, HTMLResponse
+from database import redis_obj as redis
 
 app = FastAPI()
 
@@ -25,17 +26,24 @@ async def generate(link: LinkData, request: Request):
     """
 
     link_address = link.address
-    
-    is_exists = check_link_is_exsits(link_address)
 
-    if is_exists != False:
-        return {"link": f"{request.client.host}/{is_exists}"}
+    cashe = redis.get(link_address)
+    if cashe:
+        return {"link": f"{request.client.host}/{cashe.decode()}"}
 
+    else:
+        is_exists = check_link_is_exsits(link_address)
 
-    link_validation(link_address)
-    random_link = create_short_link_record(link_address)
+        if is_exists != False:
+            set_cashe(link_address, is_exists, 5)
+            return {"link": f"{request.client.host}/{is_exists}"}
 
-    return {"link": f"{request.client.host}/{random_link}"}
+        else:
+            link_validation(link_address)
+            random_link = create_short_link_record(link_address)
+            set_cashe(link_address, random_link, 60)
+            return {"link": f"{request.client.host}/{random_link}"}
+
 
 
 @app.get("/{link}")
