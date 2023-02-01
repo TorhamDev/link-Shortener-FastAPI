@@ -1,5 +1,6 @@
 from re import match
 from fastapi import HTTPException
+from constants import WITH_HTTP, WITH_HTTPS
 
 
 def link_validation(link: str) -> bool:
@@ -11,12 +12,9 @@ def link_validation(link: str) -> bool:
     return : True, False or HTTPException
     """
 
-    url_http_https = "^https?:\\/\\/(?:www\\.)?[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$"
-    url_no_http_https = "^[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b(?:[-a-zA-Z0-9()@:%_\\+.~#?&\\/=]*)$"
-
-    if match(url_http_https, link):
+    if match(WITH_HTTPS, link):
         return True
-    elif match(url_no_http_https, link):
+    elif match(WITH_HTTP, link):
         return True
     else:
         raise HTTPException(status_code=400, detail="Invalid link address")
