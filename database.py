@@ -1,11 +1,19 @@
 from contextvars import ContextVar
-import redis
+from constants import (
+    REDIS_DB,
+    REDIS_DB_HOST,
+    REDIS_DB_PORT,
+    DB_HOST,
+    DB_NAME,
+    DB_PORT,
+    DB_USER,
+    DB_PASSWORD,
+)
 import peewee
+import redis
 
+redis_obj = redis.Redis(host=REDIS_DB_HOST, port=REDIS_DB_PORT, db=REDIS_DB)
 
-redis_obj = redis.Redis(host="localhost", port=6379, db=0)
-
-DATABASE_NAME = "app.db"
 db_state_default = {
     "closed": None,
     "conn": None,
@@ -27,5 +35,11 @@ class PeeweeConnectionState(peewee._ConnectionState):
         return self._state.get()[name]
 
 
-db = peewee.MySQLDatabase('shortener_link', user='root', password='mysql', host='localhost', port=3306)
+db = peewee.MySQLDatabase(
+    DB_NAME,
+    user=DB_USER,
+    password=DB_PASSWORD,
+    host=DB_HOST,
+    port=DB_PORT,
+)
 db._state = PeeweeConnectionState()
