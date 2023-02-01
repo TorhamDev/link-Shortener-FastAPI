@@ -3,3 +3,5 @@ peewee==3.15.4
 uvicorn==0.20.0
 fastapi==0.89.1
 redis==4.4.2
+pydantic~=1.10.4
+starlette~=0.22.0

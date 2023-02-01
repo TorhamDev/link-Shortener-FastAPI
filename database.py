@@ -3,7 +3,6 @@ import redis
 import peewee
 
 
-
 redis_obj = redis.Redis(host="localhost", port=6379, db=0)
 
 DATABASE_NAME = "app.db"

@@ -8,15 +8,15 @@ def generate_short_link():
     """
     It is responsible for creating random short links
 
-    retrun : random string for short link
+    return : random string for short link
     """
 
     while True:
         random_flag = random_strings.random_letters(8)
 
-        link_qury = Link.select().where(Link.short_link == random_flag)
+        link_query = Link.select().where(Link.short_link == random_flag)
 
-        if link_qury.exists():
+        if link_query.exists():
             continue
 
         else:
@@ -40,13 +40,13 @@ def create_short_link_record(link_address: str) -> str:
     return random_link
 
 
-def check_link_is_exsits(link) -> Union[str, bool]:
+def check_link_is_exists(link) -> Union[str, bool]:
     """
     It is responsible for checking input link already exists or not
 
     params : link : user input link for generating short link
 
-    retrun : short link if exsits or False
+    return : short link if exists or False
     """
 
     query = Link.select().where(Link.address == link)
@@ -56,15 +56,15 @@ def check_link_is_exsits(link) -> Union[str, bool]:
         return False
 
 
-def set_cashe(key: str, value: str, expire_time=None) -> bool:
+def set_cache(key: str, value: str, expire_time=None) -> bool:
     """
-    Set cashe in redis with expire time
+    Set cache in redis with expire time
 
     params : key : key for set data in redis
-    params : value : data want to save in redist as cashe
-    params : expire_tim : expire time for cashe, also can be null. this mean for ever :)
+    params : value : data want to save in redis as cache
+    params : expire_tim : expire time for cache, also can be null. that is mean forever :)
 
-    retrun: True or False
+    return: True or False
     """
 
     redis.set(key, value)

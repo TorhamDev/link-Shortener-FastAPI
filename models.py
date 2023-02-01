@@ -11,8 +11,6 @@ class Link(peewee.Model):
         database = db
 
 
-
 db.connect()
-db.create_tables([Link], safe = True)
+db.create_tables([Link], safe=True)
 db.close()
-
