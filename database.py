@@ -27,6 +27,5 @@ class PeeweeConnectionState(peewee._ConnectionState):
         return self._state.get()[name]
 
 
-db = peewee.SqliteDatabase(DATABASE_NAME, check_same_thread=False)
-
+db = peewee.MySQLDatabase('shortener_link', user='root', password='mysql', host='localhost', port=3306)
 db._state = PeeweeConnectionState()
