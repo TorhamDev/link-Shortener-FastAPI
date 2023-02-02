@@ -58,6 +58,8 @@ docker build -t fast-api-link .
 docker run -d -p 8080:8080 fast-api-link
 ```
 
+# Document
+**To see the project document, after running it, go to the `/redoc` or `/docs` path and view the document**
 
 
 # License
