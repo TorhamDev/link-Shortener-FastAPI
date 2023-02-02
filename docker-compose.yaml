@@ -15,7 +15,7 @@ services:
       - '3306'
     volumes:
       - type: bind
-        source: /home/torham/test_mysql
+        source: /var/lib/mysql
         target: /var/lib/mysql
     
     networks:
