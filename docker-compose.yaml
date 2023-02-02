@@ -1,0 +1,59 @@
+version: '3.3'
+
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql-db
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'shortener_link'  
+      MYSQL_PASSWORD: 'mysql'
+      MYSQL_ROOT_PASSWORD: 'mysql'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - type: bind
+        source: /home/torham/test_mysql
+        target: /var/lib/mysql
+    
+    networks:
+      - backend
+
+  redis:
+    image: redis:latest
+    container_name: redis-db
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - backend
+
+  shortener:
+    image: link-shortener-image
+    container_name: link-shortener
+    restart: always
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+    environment:
+      DB_NAME: 'shortener_link'  
+      DB_USER: 'root'
+      DB_PASSWORD: 'mysql'
+      DB_HOST: 'mysql-db'
+      DB_PORT: 3306
+      REDIS_DB: 0
+      REDIS_DB_HOST: redis-db
+      REDIS_DB_PORT: 6379
+    networks:
+      - backend
+    depends_on:
+      - redis
+      - db
+
+networks:
+  backend:
+    
