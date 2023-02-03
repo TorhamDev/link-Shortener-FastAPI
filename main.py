@@ -3,10 +3,15 @@ from pydantic import BaseModel
 from models import Link
 from validations import link_validation
 from utils import create_short_link_record, check_link_is_exists, set_cache
-from starlette.responses import RedirectResponse, HTMLResponse
+from starlette.responses import RedirectResponse
 from database import redis_obj as redis
+from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
+
 
 app = FastAPI()
+templates = Jinja2Templates(directory="templates")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 class LinkData(BaseModel):
@@ -63,9 +68,9 @@ async def redirect(link: str):
 
 
 @app.get("/")
-async def root():
+async def root(request: Request):
     """
     Web site index
     """
 
-    return HTMLResponse("Hello World!")
+    return templates.TemplateResponse("index.html", {"request": request})
