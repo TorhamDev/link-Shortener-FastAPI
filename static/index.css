@@ -8,12 +8,18 @@
     right: 0;
     top: 0;
     bottom: 0;
-    z-index: -2;
+    z-index: -3;
 }
 .lite-black {
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.56);
+    position: absolute;
+    z-index: -2;
+}
+
+.input-text-div {
+    margin-top: 40px;
     position: absolute;
     z-index: -1;
 }
