@@ -40,12 +40,12 @@
 
 
 
-    <div class="input-group mb-3" hidden
-    style="position: absolute; margin-top: 50px;width: 50%;left: 21%;">
-        <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username"
+    <div class="input-group mb-3" id="copy_field"
+        style="visibility: hidden; position: absolute; margin-top: 50px;width: 50%;left: 21%;">
+        <input id="copy_field_input" type="text" class="form-control" placeholder="Short link" aria-label="Short link"
             aria-describedby="basic-addon2">
         <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button">Button</button>
+            <button onclick="CopyToClip();" class="btn btn-outline-secondary" type="button">Copy</button>
         </div>
     </div>
 
@@ -65,11 +65,19 @@
     <script>
 
         var host = window.location.protocol + "//" + window.location.host;
-        console.log(host)
+
+        function show_copy(response) {
+            console.log("---");
+            console.log(response);
+            copy_field = document.getElementById("copy_field");
+            copy_field_input = document.getElementById("copy_field_input");
+            copy_field_input.value = response.link;
+            copy_field.style.visibility = 'visible';
+        }
+
 
         function call_api() {
             url_for_send = document.getElementById("url_input").value
-            console.log("==>", url_for_send)
             fetch(`${host}/generate`, {
                 method: 'POST',
                 headers: {
@@ -79,8 +87,24 @@
                 body: JSON.stringify({ "address": url_for_send })
             })
                 .then(response => response.json())
-                .then(response => console.log(JSON.stringify(response)))
+                .then(response => show_copy(response))
 
+        }
+
+
+        function CopyToClip() {
+            // Get the text field
+            var copyText = document.getElementById("copy_field_input");
+
+            // Select the text field
+            copyText.select();
+            copyText.setSelectionRange(0, 99999); // For mobile devices
+
+            // Copy the text inside the text field
+            navigator.clipboard.writeText(copyText.value);
+
+            // Alert the copied text
+            alert("Copied the text: " + copyText.value);
         }
 
 
