@@ -1,10 +1,10 @@
 from fastapi import FastAPI, HTTPException, Request
 from pydantic import BaseModel
-from models import Link
-from validations import link_validation
-from utils import create_short_link_record, check_link_is_exists, set_cache
+from models.links import Link
+from tools.validations import link_validation
+from tools.utils import create_short_link_record, check_link_is_exists, set_cache
 from starlette.responses import RedirectResponse
-from database import redis_obj as redis
+from tools.database import redis_obj as redis
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 
@@ -72,5 +72,27 @@ async def root(request: Request):
     """
     Web site index
     """
-
     return templates.TemplateResponse("index.html", {"request": request})
+
+
+@app.get("/admin/")
+async def admin(request: Request):
+    """
+    admin panel
+    """
+
+    total_urls_cache = redis.dbsize()
+    last_10_link = Link.select().limit(10)
+    count_link_on_db = Link.select().count()
+
+    print(last_10_link)
+    print(total_urls_cache)
+
+    context = {
+        "request": request,
+        "total_urls_cache" : total_urls_cache,
+        "last_10_link" : last_10_link,
+        "count_link_on_db": count_link_on_db,
+
+    }
+    return templates.TemplateResponse("admin/index.html", context)

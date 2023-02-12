@@ -1,7 +1,7 @@
 from python_random_strings import random_strings
-from models import Link
+from models.links import Link
 from typing import Union
-from database import redis_obj as redis
+from tools.database import redis_obj as redis
 
 
 def generate_short_link():

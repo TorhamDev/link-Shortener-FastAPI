@@ -1,6 +1,6 @@
 import peewee
 
-from database import db
+from tools.database import db
 
 
 class Link(peewee.Model):

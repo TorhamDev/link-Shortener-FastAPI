@@ -1,6 +1,6 @@
 from re import match
 from fastapi import HTTPException
-from constants import WITH_HTTP, WITH_HTTPS
+from tools.constants import WITH_HTTP, WITH_HTTPS
 
 
 def link_validation(link: str) -> bool:
